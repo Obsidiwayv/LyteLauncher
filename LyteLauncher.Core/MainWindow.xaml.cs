@@ -115,19 +115,30 @@ namespace LyteLauncher.Core
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
             if (LoadedGame is null) return;
-            var playtime = new PlaytimeManager(LoadedGame.Id);
             var currentGame = LoadedGame;
 
-            playtime.Start();
             Task.Run(() =>
             {
-                Logger.Write($"Started game process {currentGame.Name}");
+                var gamelogger = Logger.UseSector(currentGame.ExecutablePath);
+
+                gamelogger.Write("Started game process");
+                var current = DateTime.UtcNow;
 
                 var proc = Process.Start(currentGame.ExecutablePath);
                 proc.WaitForExit();
-                Games.UpdateTime(currentGame.Id, playtime.Stop());
 
-                Logger.Write($"{currentGame}");
+                var curentPlaytime = (DateTime.UtcNow - current).TotalSeconds;
+                var now = curentPlaytime + Games.GetTimeFromGUID(currentGame.Id);
+                Games.UpdateTime(currentGame.Id, now);
+
+                gamelogger.Write("ended execution");
+                Dispatcher.BeginInvoke(() =>
+                {
+                    GamePlaytime.Content = Math.ParseTime(now);
+                    GamePlaytimeCurrent.Visibility = Visibility.Visible;
+                    TimeCurrent.Visibility = Visibility.Visible;
+                    GamePlaytimeCurrent.Content = Math.ParseTime(curentPlaytime);
+                });
             });
         }
 
@@ -146,5 +157,43 @@ namespace LyteLauncher.Core
                 GameViewIsHidden = false;
             }
         }
+
+        //private void MinimizeButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    WindowState = WindowState.Minimized;
+        //}
+
+        // Probably Fixed in the future 
+        //private void MaximizeButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (WindowState == WindowState.Maximized)
+        //    {
+        //        WindowState = WindowState.Normal;
+        //        MaximizeIcon.Data = (Geometry)FindResource("MaximizeIcon");
+        //    }
+        //    else
+        //    {
+        //        WindowState = WindowState.Maximized;
+        //        MaximizeIcon.Data = (Geometry)FindResource("RestoreIcon");
+        //    }
+        //}
+
+        //private void CloseButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Close();
+        //}
+
+        //private void TitleBarMovable_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (e.ChangedButton == MouseButton.Left)
+        //    {
+        //        try
+        //        {
+        //            DragMove();
+        //        }
+        //        catch
+        //        { }
+        //    }
+        //}
     }
 }

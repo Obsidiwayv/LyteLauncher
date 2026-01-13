@@ -6,16 +6,62 @@
         xmlns:local="clr-namespace:LyteLauncher.Core"
         mc:Ignorable="d"
         Title="LyteLauncher" Height="850" Width="1100" Background="#FF1B1B1B">
-    <Grid Background="#FF1B1B1B">
-        <Button x:Name="AddGameButton" Content="Add Game" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.467,0.603" Height="24" Width="105" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" Click="AddGameButton_Click" Margin="92,0,0,0"/>
-        <ListBox HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="GamesList" Width="197" Margin="0,24,0,0" Background="#FF191919" BorderBrush="{x:Null}" Foreground="White" HorizontalAlignment="Left"/>
-        <Button Content="Settings" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.467,0.603" Height="24" Width="92" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" Click="AddGameButton_Click"/>
-        <Canvas Margin="197,19,0,0" Background="#FF1B1B1B">
-            <Label x:Name="GameText" Content="No Game Selected" Canvas.Left="10" Canvas.Top="10" Height="74" Width="883" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="48" HorizontalContentAlignment="Center" Foreground="White"/>
-            <Button x:Name="PlayButton" Style="{StaticResource ResourceKey=Rounded}" Content="Play" Height="82" Canvas.Left="248" Canvas.Top="89" Width="100" FontSize="24" BorderBrush="{x:Null}" Foreground="White" Background="#FF5910FF" Click="PlayButton_Click" HorizontalAlignment="Center" VerticalAlignment="Top"/>
-            <Label x:Name="GamePlaytime" Content="None" Height="62" Canvas.Left="353" Canvas.Top="109" Width="246" RenderTransformOrigin="0.509,0.049" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White"/>
-            <Label x:Name="TimeLabel" Content="Playtime" Height="62" Canvas.Left="366" Canvas.Top="78" Width="220" RenderTransformOrigin="0.509,0.049" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FF464646"/>
-        </Canvas>
 
+    <!--<WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" ResizeBorderThickness="{x:Static SystemParameters.WindowResizeBorderThickness}" />
+    </WindowChrome.WindowChrome> -->
+    <Grid Background="#FF1B1B1B">
+        <!-- <Grid WindowChrome.IsHitTestVisibleInChrome="True" MouseDown="TitleBarMovable_MouseDown" x:Name="TitleBarMovable" Height="24" VerticalAlignment="Top"/> -->
+        <Button WindowChrome.IsHitTestVisibleInChrome="True" x:Name="AddGameButton" Content="Add Game" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.467,0.603" Height="24" Width="105" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" Click="AddGameButton_Click" Margin="92,0,0,0"/>
+        <Button WindowChrome.IsHitTestVisibleInChrome="True" Content="Settings" HorizontalAlignment="Left" VerticalAlignment="Top" RenderTransformOrigin="0.467,0.603" Height="24" Width="92" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" Click="AddGameButton_Click"/>
+        <Canvas Margin="0,29,0,0">
+            <Border BorderBrush="#FF252525" BorderThickness="1" Height="104" Width="875" HorizontalAlignment="Left" Canvas.Left="205" VerticalAlignment="Center" RenderTransformOrigin="0.5,0.5" Background="#FF191919">
+                <Border.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Border.Resources>
+                <Grid>
+                    <Button x:Name="PlayButton" Style="{StaticResource ResourceKey=Rounded}" Content="Play" Width="206" FontSize="24" BorderBrush="{x:Null}" Foreground="White" Click="PlayButton_Click" HorizontalAlignment="Left" Margin="39,19,0,19">
+                        <Button.Background>
+                            <RadialGradientBrush RadiusX="1" Center="1,1" GradientOrigin="0.5,2" RadiusY="1">
+                                <GradientStop Color="#FFFF00F5"/>
+                                <GradientStop Color="#FF7100FF" Offset="1"/>
+                            </RadialGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Label x:Name="GameText" Content="No Game Selected" Height="82" Width="621" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="48" HorizontalContentAlignment="Center" Foreground="White" Margin="276,0,0,0"/>
+                </Grid>
+            </Border>
+            <Border BorderBrush="#FF252525" BorderThickness="1" Height="131" Width="875" Canvas.Left="205" RenderTransformOrigin="0.5,0.5" Background="#FF191919" HorizontalAlignment="Left" VerticalAlignment="Center" Canvas.Top="115">
+                <Border.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Border.Resources>
+                <Grid>
+                    <Label x:Name="TimeLabel" Content="Playtime" Height="62" Width="220" RenderTransformOrigin="0.509,0.049" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FF464646" Margin="23,10,0,0"/>
+                    <Label x:Name="GamePlaytime" Content="None" Height="62" Width="246" RenderTransformOrigin="0.509,0.049" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Margin="10,57,0,0"/>
+                    <Label x:Name="TimeCurrent" Visibility="Hidden" Content="Current Playtime" Height="62" Width="220" RenderTransformOrigin="0.509,0.049" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#FF464646" Margin="269,10,0,0"/>
+                    <Label x:Name="GamePlaytimeCurrent" Visibility="Hidden" Content="None" Height="62" Width="246" RenderTransformOrigin="0.509,0.049" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Margin="256,57,0,0"/>
+                </Grid>
+            </Border>
+            <!-- <Button WindowChrome.IsHitTestVisibleInChrome="True" x:Name="MaximizeButton" Canvas.Left="808" Height="36" Width="50" Canvas.Top="-18" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Click="MaximizeButton_Click">
+                <Path x:Name="MaximizeIcon" Data="{StaticResource MaximizeIcon}" Fill="White"/>
+            </Button>
+            <Button WindowChrome.IsHitTestVisibleInChrome="True" x:Name="CloseButton" Canvas.Left="858" Height="36" Width="45" Canvas.Top="-18" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Click="CloseButton_Click">
+                <Path Data="{StaticResource CloseIcon}" Fill="White" Stroke="White" HorizontalAlignment="Center" VerticalAlignment="Center" Height="16" Stretch="Fill" Width="16" />
+            </Button>
+            <Button WindowChrome.IsHitTestVisibleInChrome="True" x:Name="MinimizeButton" Canvas.Left="762" Height="36" Width="46" Canvas.Top="-18" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Click="MinimizeButton_Click">
+                <Path Data="{StaticResource MinimizeIcon}" Fill="White" Stroke="White" HorizontalAlignment="Center" VerticalAlignment="Center" Height="4" Stretch="Fill" Width="16" />
+            </Button> -->
+        </Canvas>
+        <ListBox HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="GamesList" Width="187" Margin="10,29,0,10" Background="#FF191919" Foreground="White" HorizontalAlignment="Left" BorderBrush="#FF252525">
+            <ListBox.Resources>
+                <Style TargetType="Border">
+                    <Setter Property="CornerRadius" Value="10"/>
+                </Style>
+            </ListBox.Resources>
+        </ListBox>
     </Grid>
 </Window>

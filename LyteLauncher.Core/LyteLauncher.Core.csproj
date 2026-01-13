@@ -10,10 +10,12 @@
 
   <ItemGroup>
     <None Remove="OIP.jpg" />
+    <None Remove="togif.gif" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="OIP.jpg" />
+    <Resource Include="togif.gif" />
   </ItemGroup>
 
 </Project>

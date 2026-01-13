@@ -2,9 +2,21 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Windows.Shapes;
 
 namespace LyteLauncher.Core
 {
+    public class LoggerSector(string sectorName, string fileName) 
+    {
+        public void Write(string content)
+        {
+            var file = File.ReadAllText(fileName);
+            file += $"[{DateTime.UtcNow:hh:mm:ss}] -> {sectorName} -> {content}\n";
+
+            File.WriteAllText(fileName, file);
+        }
+    }
+
     public class Logger
     {
         private static string Folder { get; } = $"{DataManager.LauncherPath()}/Logs";
@@ -12,37 +24,16 @@ namespace LyteLauncher.Core
         private string FileName { get; } 
             = $"{Folder}/{DateTime.Now:ddhmmyyyy}.log";
 
-        private bool IsReady { get; set; } = false;
-
-        private List<string> Queue { get; set; } = [];
-
         public Logger()
         {
             if (!Directory.Exists(Folder)) Directory.CreateDirectory(Folder);
 
             File.Create(FileName);
-            IsReady = true;
         }
 
-        public void Write(string content)
+        public LoggerSector UseSector(string sectorName)
         {
-            if (!IsReady)
-            {
-                Queue.Add(content);
-                return;
-            }
-            var file = File.ReadAllText(FileName);
-            if (Queue.Count != 0)
-            {
-                foreach (string line in Queue)
-                {
-                    file += $"{line}\n";
-                }
-            } else
-            {
-                file += $"{content}\n";
-            }
-            File.WriteAllText(FileName, file);
+            return new LoggerSector(sectorName, FileName);
         }
     }
 }

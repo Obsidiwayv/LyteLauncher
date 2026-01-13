@@ -12,9 +12,13 @@ namespace LyteLauncher.Core
             int m = (int)((time % 3600) / 60);
             int s = (int)(time % 60);
 
-            if (h > 0) return $"{h} Hours {m} Minutes";
-            if (m > 0) return $"{m} Minutes";
-            return $"{s} Seconds";
+            var hEnd = h == 1 ? "" : "s";
+            var mEnd = m == 1 ? "" : "s";
+            var sEnd = s == 1 ? "" : "s";
+
+            if (h > 0) return $"{h} Hour{hEnd} {m} Minutes{mEnd}";
+            if (m > 0) return $"{m} Minute{mEnd}";
+            return $"{s} Second{sEnd}";
         }
     }
 }
