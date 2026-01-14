@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="LyteLauncher.Core/LyteLauncher.Core.csproj" />
+  <Project Path="StellarStrap/StellarStrap.csproj" Id="33eea06e-391f-4c76-88b7-ff667efc3284" />
 </Solution>
