@@ -57,6 +57,7 @@
                     <DropShadowEffect Color="#FF8800FF" Direction="0" BlurRadius="20"/>
                 </ProgressBar.Effect>
             </ProgressBar>
+            <Grid Height="805" Width="1100"/>
             <!-- <Button WindowChrome.IsHitTestVisibleInChrome="True" x:Name="MaximizeButton" Canvas.Left="808" Height="36" Width="50" Canvas.Top="-18" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Click="MaximizeButton_Click">
                 <Path x:Name="MaximizeIcon" Data="{StaticResource MaximizeIcon}" Fill="White"/>
             </Button>
@@ -67,7 +68,7 @@
                 <Path Data="{StaticResource MinimizeIcon}" Fill="White" Stroke="White" HorizontalAlignment="Center" VerticalAlignment="Center" Height="4" Stretch="Fill" Width="16" />
             </Button> -->
         </Canvas>
-        <ListBox HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="GamesList" Width="187" Margin="10,148,0,10" Background="#FF191919" Foreground="White" HorizontalAlignment="Left" BorderBrush="#FF252525">
+        <ListBox HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="GamesList" Width="187" Margin="10,147,0,11" Background="#FF191919" Foreground="White" HorizontalAlignment="Left" BorderBrush="#FF252525">
             <ListBox.Resources>
                 <Style TargetType="Border">
                     <Setter Property="CornerRadius" Value="10"/>

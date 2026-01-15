@@ -1,4 +1,5 @@
 <Solution>
   <Project Path="LyteLauncher.Core/LyteLauncher.Core.csproj" />
-  <Project Path="StellarStrap/StellarStrap.csproj" Id="33eea06e-391f-4c76-88b7-ff667efc3284" />
+  <Project Path="StellaRuntime/Roblox/Roblox.csproj" Id="86ec7baa-a83e-4210-9710-8acd5cdc0c41" />
+  <Project Path="StellaRuntime/Bootstrapper/StellaBootstrapper.csproj" Id="33eea06e-391f-4c76-88b7-ff667efc3284" />
 </Solution>
