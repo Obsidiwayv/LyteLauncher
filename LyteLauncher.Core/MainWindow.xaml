@@ -46,18 +46,27 @@
                     <Label x:Name="GamePlaytimeCurrent" Visibility="Hidden" Content="None" Height="62" Width="246" RenderTransformOrigin="0.509,0.049" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="22" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="White" Margin="256,57,0,0"/>
                 </Grid>
             </Border>
-            <ProgressBar x:Name="MasterProgressBar" Height="3" Canvas.Left="249" Canvas.Top="244" Width="810" BorderBrush="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{x:Null}">
-                <ProgressBar.Foreground>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="1,0">
-                        <GradientStop Color="#FF8800FF"/>
-                        <GradientStop Color="#FF7100FF" Offset="1"/>
-                    </LinearGradientBrush>
-                </ProgressBar.Foreground>
-                <ProgressBar.Effect>
-                    <DropShadowEffect Color="#FF8800FF" Direction="0" BlurRadius="20"/>
-                </ProgressBar.Effect>
-            </ProgressBar>
-            <Grid Height="805" Width="1100"/>
+            <ListBox HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="GamesList" Width="187" Background="#FF191919" Foreground="White" HorizontalAlignment="Center" BorderBrush="#FF252525" VerticalAlignment="Top" VerticalContentAlignment="Stretch" Height="795" Canvas.Left="10">
+                <ListBox.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </ListBox.Resources>
+                <Button Click="SelectionChanged" x:Name="RobloxStella" Content="Roblox with StellaStrap" Height="32" Width="172" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            </ListBox>
+            <Grid Height="805" Width="895" HorizontalAlignment="Left" Canvas.Left="205" VerticalAlignment="Center">
+                <ProgressBar x:Name="MasterProgressBar" Height="3" Width="810" BorderBrush="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{x:Null}" Margin="34,250,0,0">
+                    <ProgressBar.Foreground>
+                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="1,0">
+                            <GradientStop Color="#FF8800FF"/>
+                            <GradientStop Color="#FF7100FF" Offset="1"/>
+                        </LinearGradientBrush>
+                    </ProgressBar.Foreground>
+                    <ProgressBar.Effect>
+                        <DropShadowEffect Color="#FF8800FF" Direction="0" BlurRadius="20"/>
+                    </ProgressBar.Effect>
+                </ProgressBar>
+            </Grid>
             <!-- <Button WindowChrome.IsHitTestVisibleInChrome="True" x:Name="MaximizeButton" Canvas.Left="808" Height="36" Width="50" Canvas.Top="-18" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Click="MaximizeButton_Click">
                 <Path x:Name="MaximizeIcon" Data="{StaticResource MaximizeIcon}" Fill="White"/>
             </Button>
@@ -68,20 +77,5 @@
                 <Path Data="{StaticResource MinimizeIcon}" Fill="White" Stroke="White" HorizontalAlignment="Center" VerticalAlignment="Center" Height="4" Stretch="Fill" Width="16" />
             </Button> -->
         </Canvas>
-        <ListBox HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="GamesList" Width="187" Margin="10,147,0,11" Background="#FF191919" Foreground="White" HorizontalAlignment="Left" BorderBrush="#FF252525">
-            <ListBox.Resources>
-                <Style TargetType="Border">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </ListBox.Resources>
-        </ListBox>
-        <ListBox HorizontalContentAlignment="Stretch" ScrollViewer.HorizontalScrollBarVisibility="Disabled" x:Name="BuiltInGames" Width="187" Margin="10,29,0,691" Background="#FF191919" Foreground="White" HorizontalAlignment="Left" BorderBrush="#FF252525">
-            <ListBox.Resources>
-                <Style TargetType="{x:Type Border}">
-                    <Setter Property="CornerRadius" Value="10"/>
-                </Style>
-            </ListBox.Resources>
-            <Button Content="Roblox (StellarStrap)" Foreground="White"/>
-        </ListBox>
     </Grid>
 </Window>

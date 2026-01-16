@@ -20,7 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\StellarStrap\StellarStrap.csproj" />
+    <ProjectReference Include="..\StellaRuntime\Bootstrapper\StellaBootstrapper.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,6 +6,12 @@ using System.Text.Json;
 
 namespace LyteLauncher.Core
 {
+    public enum GameType
+    {
+        Common,
+        Roblox
+    }
+
     public class GameListData
     {
         public string? IconSrc { get; set; }
@@ -15,10 +21,42 @@ namespace LyteLauncher.Core
         public Guid Id { get; set; }
     }
 
+    public class LoadedVirtualGameCard : GameListData
+    {
+        public GameType Type = GameType.Common;
+
+        public static LoadedVirtualGameCard FromList(GameListData list)
+        {
+            return new LoadedVirtualGameCard()
+            {
+                ExecutablePath = list.ExecutablePath,
+                IconSrc = list.IconSrc,
+                Id = list.Id,
+                Name = list.Name,
+                TotalPlayTime = list.TotalPlayTime
+            };
+        }
+    }
+
     internal class DataManager
     {
         public static string JsonGamesFile = $"{LauncherPath()}/games.json";
         public static string IndexFile = $"{LauncherPath()}/index";
+        public static string AppsDir = $"{LauncherPath()}/Apps";
+        public static string RobloxAppDir = $"{AppsDir}/Stella";
+        public static string RobloxZipFileCacheDir = $"{LauncherPath()}/Download/RobloxClient";
+
+        public static void InitDirectories()
+        {
+            string[] dirs = [RobloxAppDir, RobloxZipFileCacheDir];
+            foreach (string dir in dirs)
+            {
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+            }
+        }
 
         public static void WriteGame(GameListData game)
         {

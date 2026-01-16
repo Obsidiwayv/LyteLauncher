@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using StellaBootstrapper;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -26,15 +27,19 @@ namespace LyteLauncher.Core
     public partial class MainWindow : Window
     {
         public static Logger Logger { get; } = new();
+        public static RobloxHandler RobloxH { get; } = new();
+
         public bool GameViewIsHidden = true;
 
         private List<GameListData>? GameData = DataManager.GetGamesList();
-        private GameListData? LoadedGame { get; set; }
+        private LoadedVirtualGameCard? LoadedGame { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
             ReloadGames();
+
+            DataManager.InitDirectories();
 
             ShowHideGameView(Visibility.Hidden);
         }
@@ -76,40 +81,44 @@ namespace LyteLauncher.Core
                 GamesList.Items.Clear();
             }
 
+            AddGame("Roblox With Stella", RobloxHandler.Tag);
+
             foreach (GameListData game in GameData)
             {
-                Button buttonComp = new()
-                {
-                    Content = game.Name,
-                    Tag = game.Id,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    Background = GamesList.Background,
-                    BorderBrush = GamesList.BorderBrush,
-                    Foreground = System.Windows.Media.Brushes.White
-                };
-
-                buttonComp.Click += SelectionChanged;
-                buttonComp.Width = GamesList.Width;
-                buttonComp.Height += 5;
-
-                GamesList.Items.Add(buttonComp);
+                AddGame(game.Name, game.Id);
             }
         }
 
         private void SelectionChanged(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
-            Guid gameId = (Guid)button.Tag;
 
+            LoadedVirtualGameCard? virtualGameCard;
 
-            var game = Games.GetFromGUID(gameId);
-            if (game == null) return;
+            if ((string)button.Tag == RobloxHandler.Tag)
+            {
+                virtualGameCard = new()
+                {
+                    ExecutablePath = RobloxHandler.RobloxPlayerExecutable,
+                    Id = new Guid(),
+                    Name = "Roblox With StellaStrap",
+                    IconSrc = "",
+                    TotalPlayTime = RobloxHandler.GetTimings(),
+                    Type = GameType.Roblox
+                };
+            } else
+            {
+                Guid gameId = (Guid)button.Tag;
+                var game = Games.GetFromGUID(gameId);
+                if (game == null) return;
+                virtualGameCard = LoadedVirtualGameCard.FromList(game);
+            }
             if (GameViewIsHidden) ShowHideGameView(Visibility.Visible);
 
-            LoadedGame = game;
+            LoadedGame = virtualGameCard;
 
-            GameText.Content = game.Name;
-            GamePlaytime.Content = Math.ParseTime(game.TotalPlayTime);
+            GameText.Content = virtualGameCard.Name;
+            GamePlaytime.Content = Math.ParseTime(virtualGameCard.TotalPlayTime);
         }
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
@@ -124,12 +133,41 @@ namespace LyteLauncher.Core
                 gamelogger.Write("Started game process");
                 var current = DateTime.UtcNow;
 
-                var proc = Process.Start(currentGame.ExecutablePath);
-                proc.WaitForExit();
+                if (currentGame.Type != GameType.Roblox)
+                {
+                    var proc = Process.Start(currentGame.ExecutablePath);
+                    proc.WaitForExit();
+                }
+                if (currentGame.Type == GameType.Roblox)
+                {
+                    var testPreset = new BootstrapPreset()
+                    {
+                        BackgroundImage = new Uri($"{Directory.GetCurrentDirectory()}/Presets/Fnaf/Springtrap.png", UriKind.Absolute),
+                        //FontFace = new Uri(""),
+                        Sound = new Uri("Presets/Fnaf/fnaf3-start.mp3", UriKind.Relative)
+                    };
+                    Dispatcher.Invoke(() => 
+                    {
+                        var robloxBootstrapper = new BootStrapperWindow(testPreset, DataManager.RobloxAppDir);
+                        robloxBootstrapper.Show();
+                        robloxBootstrapper.ProgressTrigger += (time) => MasterProgressBar.Value = time;
+                        Task.Run(() => robloxBootstrapper.DownloadClient(
+                                DataManager.RobloxZipFileCacheDir));
+                    });
+                    //robloxBootstrapper.StartClient();
+                }
 
+                double now;
                 var curentPlaytime = (DateTime.UtcNow - current).TotalSeconds;
-                var now = curentPlaytime + Games.GetTimeFromGUID(currentGame.Id);
-                Games.UpdateTime(currentGame.Id, now);
+                if (LoadedGame.Type == GameType.Roblox) 
+                {
+                    now = curentPlaytime + RobloxHandler.GetTimings();
+                    RobloxHandler.UpdateTiming(now);
+                } else
+                {
+                    now = curentPlaytime + Games.GetTimeFromGUID(currentGame.Id);
+                    Games.UpdateTime(currentGame.Id, now);
+                }
 
                 gamelogger.Write("ended execution");
                 Dispatcher.BeginInvoke(() =>
@@ -156,6 +194,25 @@ namespace LyteLauncher.Core
             {
                 GameViewIsHidden = false;
             }
+        }
+
+        private void AddGame<T>(string name, T tag)
+        {
+            Button buttonComp = new()
+            {
+                Content = name,
+                Tag = tag,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Background = GamesList.Background,
+                BorderBrush = GamesList.BorderBrush,
+                Foreground = System.Windows.Media.Brushes.White
+            };
+
+            buttonComp.Click += SelectionChanged;
+            buttonComp.Width = GamesList.Width;
+            buttonComp.Height += 5;
+
+            GamesList.Items.Add(buttonComp);
         }
 
         //private void MinimizeButton_Click(object sender, RoutedEventArgs e)
