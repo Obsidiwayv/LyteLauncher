@@ -1,3 +1,6 @@
 [submodule "StellaRuntime"]
 	path = StellaRuntime
 	url = https://github.com/Obsidiwayv/StellaRuntime.git
+[submodule "RivenSDK"]
+	path = RivenSDK
+	url = https://github.com/Obsidiwayv/RivenSDK.git
