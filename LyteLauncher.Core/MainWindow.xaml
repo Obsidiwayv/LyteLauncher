@@ -22,7 +22,7 @@
                     </Style>
                 </Border.Resources>
                 <Grid>
-                    <Button x:Name="PlayButton" Style="{StaticResource ResourceKey=Rounded}" Content="Play" Width="206" FontSize="24" BorderBrush="{x:Null}" Foreground="White" Click="PlayButton_Click" HorizontalAlignment="Left" Margin="39,19,0,19">
+                    <Button x:Name="PlayButton" Style="{StaticResource PlayButtonStyle}" Content="Play" Width="206" FontSize="24" Foreground="White" Click="PlayButton_Click" HorizontalAlignment="Left" Margin="39,19,0,19" BorderBrush="{x:Null}">
                         <Button.Background>
                             <RadialGradientBrush RadiusX="1" Center="1,1" GradientOrigin="0.5,2" RadiusY="1">
                                 <GradientStop Color="#FFFF00F5"/>
@@ -30,7 +30,7 @@
                             </RadialGradientBrush>
                         </Button.Background>
                     </Button>
-                    <Label x:Name="GameText" Content="No Game Selected" Height="82" Width="621" HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="48" HorizontalContentAlignment="Center" Foreground="White" Margin="276,0,0,0"/>
+                    <Label x:Name="GameText" Content="No Game Selected" Height="82" VerticalAlignment="Center" FontSize="48" HorizontalContentAlignment="Center" Foreground="White" Margin="276,0,10,0"/>
                 </Grid>
             </Border>
             <Border BorderBrush="#FF252525" BorderThickness="1" Height="134" Width="875" Canvas.Left="205" RenderTransformOrigin="0.5,0.5" Background="#FF191919" HorizontalAlignment="Center" VerticalAlignment="Top" Canvas.Top="118">
@@ -54,7 +54,7 @@
                 </ListBox.Resources>
                 <Button Click="SelectionChanged" x:Name="RobloxStella" Content="Roblox with StellaStrap" Height="32" Width="172" BorderBrush="{x:Null}" Foreground="White" Background="{x:Null}" HorizontalAlignment="Center" VerticalAlignment="Top"/>
             </ListBox>
-            <Grid Height="805" Width="895" HorizontalAlignment="Left" Canvas.Left="205" VerticalAlignment="Center">
+            <Grid x:Name="MainGrid" Height="805" Width="895" HorizontalAlignment="Left" Canvas.Left="205" VerticalAlignment="Center">
                 <ProgressBar x:Name="MasterProgressBar" Height="3" Width="810" BorderBrush="{x:Null}" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{x:Null}" Margin="34,250,0,0">
                     <ProgressBar.Foreground>
                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="1,0">
@@ -67,6 +67,14 @@
                     </ProgressBar.Effect>
                 </ProgressBar>
             </Grid>
+            <Border BorderBrush="#FF252525" BorderThickness="1" Height="134" Width="875" Canvas.Left="205" RenderTransformOrigin="0.5,0.5" Background="#FF191919" Canvas.Top="257" HorizontalAlignment="Center" VerticalAlignment="Top">
+                <Border.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Border.Resources>
+                <Frame x:Name="GamePanelFrame"/>
+            </Border>
             <!-- <Button WindowChrome.IsHitTestVisibleInChrome="True" x:Name="MaximizeButton" Canvas.Left="808" Height="36" Width="50" Canvas.Top="-18" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Center" Click="MaximizeButton_Click">
                 <Path x:Name="MaximizeIcon" Data="{StaticResource MaximizeIcon}" Fill="White"/>
             </Button>

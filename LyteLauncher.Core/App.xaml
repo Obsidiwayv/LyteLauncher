@@ -10,14 +10,9 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="Button">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="Foreground" Value="Black"/>
-                <Setter Property="BorderBrush" Value="Transparent"/>
-                <Setter Property="BorderThickness" Value="0"/>
                 <Style.Triggers>
                     <Trigger Property="IsMouseOver" Value="True">
-                        <Setter Property="Background" Value="MediumPurple"/>
-                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="Background" Value="#4C9400FF"/>
                     </Trigger>
                 </Style.Triggers>
             </Style>
@@ -36,6 +31,21 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+            </Style>
+
+            <Style x:Key="PlayButtonStyle" TargetType="Button" BasedOn="{StaticResource ResourceKey=Rounded}">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <RadialGradientBrush RadiusX="1" Center="1,1" GradientOrigin="0.5,2" RadiusY="1">
+                                    <GradientStop Color="Black"/>
+                                    <GradientStop Color="#FF7100FF" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

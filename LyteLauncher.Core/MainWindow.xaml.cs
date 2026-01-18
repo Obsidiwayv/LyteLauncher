@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using RivenSDK.Core;
 using StellaBootstrapper;
 using System.Diagnostics;
 using System.Drawing;
@@ -26,12 +27,15 @@ namespace LyteLauncher.Core
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static Logger Logger { get; } = new();
+        public static Logger Logger { get; } = new($"{DataManager.LauncherPath()}/Logs");
         public static RobloxHandler RobloxH { get; } = new();
 
         public bool GameViewIsHidden = true;
 
         private List<GameListData>? GameData = DataManager.GetGamesList();
+
+        private List<BootstrapPreset> bootstrapPresets;
+
         private LoadedVirtualGameCard? LoadedGame { get; set; }
 
         public MainWindow()
@@ -40,13 +44,16 @@ namespace LyteLauncher.Core
             ReloadGames();
 
             DataManager.InitDirectories();
+            UserSettings.InitFile();
 
             ShowHideGameView(Visibility.Hidden);
+
+            bootstrapPresets = BootstrapperPresets.Get();
         }
 
         private void AddGameButton_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dialog = new()
+            Microsoft.Win32.OpenFileDialog dialog = new()
             {
                 InitialDirectory = "C:\\",
                 Filter = "Executable/Java Files|*.exe;*.jar"
@@ -81,7 +88,7 @@ namespace LyteLauncher.Core
                 GamesList.Items.Clear();
             }
 
-            AddGame("Roblox With Stella", RobloxHandler.Tag);
+            AddGame("Roblox With StellaStrap", RobloxHandler.Tag);
 
             foreach (GameListData game in GameData)
             {
@@ -91,7 +98,7 @@ namespace LyteLauncher.Core
 
         private void SelectionChanged(object sender, RoutedEventArgs e)
         {
-            Button button = (Button)sender;
+            System.Windows.Controls.Button button = (System.Windows.Controls.Button)sender;
 
             LoadedVirtualGameCard? virtualGameCard;
 
@@ -101,11 +108,22 @@ namespace LyteLauncher.Core
                 {
                     ExecutablePath = RobloxHandler.RobloxPlayerExecutable,
                     Id = new Guid(),
-                    Name = "Roblox With StellaStrap",
+                    Name = "Roblox",
                     IconSrc = "",
                     TotalPlayTime = RobloxHandler.GetTimings(),
                     Type = GameType.Roblox
                 };
+                Dispatcher.Invoke(() =>
+                {
+                    var panel = new RobloxPanel();
+                    var presetsector = Logger.UseSector("BootstrapPreset::Add");
+                    foreach (var preset in bootstrapPresets)
+                    {
+                        presetsector.Write(preset.Name);
+                        panel.BootstrapperThemesSelect.Items.Add(preset.Name);
+                    }
+                    GamePanelFrame.Content = panel;
+                });
             } else
             {
                 Guid gameId = (Guid)button.Tag;
@@ -140,21 +158,34 @@ namespace LyteLauncher.Core
                 }
                 if (currentGame.Type == GameType.Roblox)
                 {
-                    var testPreset = new BootstrapPreset()
+                    var currentPreset = UserSettings.Get().CurrentBootstrapPreset;
+                    BootstrapPreset? preset = null;
+                    foreach (var p in bootstrapPresets)
                     {
-                        BackgroundImage = new Uri($"{Directory.GetCurrentDirectory()}/Presets/Fnaf/Springtrap.png", UriKind.Absolute),
-                        //FontFace = new Uri(""),
-                        Sound = new Uri("Presets/Fnaf/fnaf3-start.mp3", UriKind.Relative)
-                    };
+                        if (p.Name == currentPreset) 
+                        {
+                            preset = p;
+                        }
+                    }
+                    preset ??= bootstrapPresets.Find((p) => p.Name == "Default")!;
+
+                    BootStrapperWindow? robloxBootstrapper = null;
                     Dispatcher.Invoke(() => 
                     {
-                        var robloxBootstrapper = new BootStrapperWindow(testPreset, DataManager.RobloxAppDir);
+                        robloxBootstrapper = new BootStrapperWindow(preset!, DataManager.RobloxAppDir);
                         robloxBootstrapper.Show();
-                        robloxBootstrapper.ProgressTrigger += (time) => MasterProgressBar.Value = time;
-                        Task.Run(() => robloxBootstrapper.DownloadClient(
-                                DataManager.RobloxZipFileCacheDir));
+                        robloxBootstrapper.ProgressTrigger += (time) => 
+                        {
+                            MasterProgressBar.Value = time;
+                            if (time == 100)
+                            {
+                                MasterProgressBar.Value = 0;
+                            }
+                        };
                     });
-                    //robloxBootstrapper.StartClient();
+                    var robloxTask = Task.Run(() => robloxBootstrapper.DownloadClient(
+                                DataManager.RobloxZipFileCacheDir));
+                    robloxTask.Wait();
                 }
 
                 double now;
@@ -198,11 +229,11 @@ namespace LyteLauncher.Core
 
         private void AddGame<T>(string name, T tag)
         {
-            Button buttonComp = new()
+            System.Windows.Controls.Button buttonComp = new()
             {
                 Content = name,
                 Tag = tag,
-                HorizontalAlignment = HorizontalAlignment.Center,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 Background = GamesList.Background,
                 BorderBrush = GamesList.BorderBrush,
                 Foreground = System.Windows.Media.Brushes.White

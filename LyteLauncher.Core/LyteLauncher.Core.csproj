@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <UseWindowsForms>true</UseWindowsForms>
     <PackageIcon>Logo-Dark.png</PackageIcon>
     <AssemblyVersion>0.01</AssemblyVersion>
     <FileVersion>0.01</FileVersion>
@@ -20,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RivenSDK\RivenSDK.Core\RivenSDK.Core.csproj" />
     <ProjectReference Include="..\StellaRuntime\Bootstrapper\StellaBootstrapper.csproj" />
   </ItemGroup>
 

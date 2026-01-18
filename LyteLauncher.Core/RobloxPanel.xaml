@@ -1,0 +1,26 @@
+﻿<Page x:Class="LyteLauncher.Core.RobloxPanel"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:LyteLauncher.Core"
+      mc:Ignorable="d" 
+      d:DesignHeight="132" d:DesignWidth="873"
+      Title="RobloxPanel">
+
+    <Grid>
+        <Grid>
+            <Label Content="Bootstrapper Theme" HorizontalAlignment="Left" Margin="66,20,0,0" VerticalAlignment="Top" Width="162" Foreground="White" FontSize="16" HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+            <ComboBox x:Name="BootstrapperThemesSelect" HorizontalAlignment="Left" Margin="22,51,0,0" VerticalAlignment="Top" Width="250" Height="41" Background="White" BorderBrush="{x:Null}" Foreground="Black" SelectionChanged="BootstrapperThemesSelect_SelectionChanged"/>
+            <Label Content="Currently Selected" HorizontalAlignment="Left" Margin="22,97,0,0" VerticalAlignment="Top" Width="108" Foreground="White"/>
+            <Label x:Name="CurrentTheme" Content="None" HorizontalAlignment="Left" Margin="135,97,0,9" Width="137" Foreground="White" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" BorderThickness="0.45,0.45,0.45,0.45">
+                <Label.BorderBrush>
+                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0,0">
+                        <GradientStop Color="#FFFF0098"/>
+                        <GradientStop Color="#FF9400FF" Offset="1"/>
+                    </LinearGradientBrush>
+                </Label.BorderBrush>
+            </Label>
+        </Grid>
+    </Grid>
+</Page>
