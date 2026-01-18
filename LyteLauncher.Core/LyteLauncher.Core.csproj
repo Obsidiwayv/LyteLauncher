@@ -12,6 +12,10 @@
     <FileVersion>0.01</FileVersion>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Assets\Logo-Dark.png" />
     <None Remove="Assets\Logo-light.png" />
